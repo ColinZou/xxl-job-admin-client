@@ -3,18 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>xxl-job</artifactId>
-        <groupId>com.xuxueli</groupId>
-        <version>2.3.1-SNAPSHOT</version>
+        <groupId>top.nb6</groupId>
+        <artifactId>xxl-job-admin-client</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>xxl-job-admin-reactive-client</artifactId>
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <kotlin.version>1.6.21</kotlin.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -35,7 +30,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.xuxueli</groupId>
+            <groupId>top.nb6</groupId>
             <artifactId>xxl-job-admin-client-common</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -1,13 +1,13 @@
 package top.nb6.scheduler.xxl.biz
 
-import com.xxl.job.core.biz.ReactiveJobGroupBiz
-import com.xxl.job.core.biz.ReactiveJobInfoBiz
-import com.xxl.job.core.biz.exceptions.ApiInvokeException
-import com.xxl.job.core.biz.model.JobGroupDto
-import com.xxl.job.core.biz.model.JobGroupListDto
-import com.xxl.job.core.biz.model.JobInfoDto
-import com.xxl.job.core.biz.model.JobInfoListDto
-import com.xxl.job.core.biz.model.types.FlagConstants
+import top.nb6.scheduler.xxl.biz.ReactiveJobGroupBiz
+import top.nb6.scheduler.xxl.biz.ReactiveJobInfoBiz
+import top.nb6.scheduler.xxl.biz.exceptions.ApiInvokeException
+import top.nb6.scheduler.xxl.biz.model.JobGroupDto
+import top.nb6.scheduler.xxl.biz.model.JobGroupListDto
+import top.nb6.scheduler.xxl.biz.model.JobInfoDto
+import top.nb6.scheduler.xxl.biz.model.JobInfoListDto
+import top.nb6.scheduler.xxl.biz.model.types.FlagConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod

@@ -1,11 +1,12 @@
 package top.nb6.scheduler.xxl.biz
 
 import top.nb6.scheduler.xxl.biz.model.JobInfoDto
-import com.xxl.job.core.biz.model.types.*
 import org.junit.jupiter.api.*
 import top.nb6.scheduler.xxl.biz.model.types.EnumExecutorBlockStrategy
 import top.nb6.scheduler.xxl.biz.model.types.EnumExecutorRoutingStrategy
 import top.nb6.scheduler.xxl.biz.model.types.EnumGlueType
+import top.nb6.scheduler.xxl.biz.model.types.EnumMissingFireStrategy
+import top.nb6.scheduler.xxl.biz.model.types.EnumScheduleType
 import top.nb6.scheduler.xxl.biz.model.types.FlagConstants
 import top.nb6.scheduler.xxl.http.XxlAdminHttpClient
 import top.nb6.scheduler.xxl.http.XxlAdminSiteProperties
