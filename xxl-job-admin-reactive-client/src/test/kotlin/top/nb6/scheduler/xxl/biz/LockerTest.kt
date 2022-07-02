@@ -51,7 +51,7 @@ internal class LockerTest {
             }
             it
         }.retryWhen(Retry.fixedDelay(20, Duration.ofMillis(100)))
-            .timeout(Duration.ofSeconds(1))
+            .timeout(Duration.ofMillis(1200))
             .`as`(StepVerifier::create).expectNext(true).verifyComplete()
     }
 }
