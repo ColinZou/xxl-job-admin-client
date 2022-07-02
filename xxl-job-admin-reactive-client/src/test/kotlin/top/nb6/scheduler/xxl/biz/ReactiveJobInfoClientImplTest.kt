@@ -1,12 +1,12 @@
 package top.nb6.scheduler.xxl.biz
 
-import com.xxl.job.core.biz.model.JobGroupDto
-import com.xxl.job.core.biz.model.JobInfoDto
-import com.xxl.job.core.biz.model.types.*
 import org.junit.jupiter.api.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import top.nb6.scheduler.xxl.biz.model.JobGroupDto
+import top.nb6.scheduler.xxl.biz.model.JobInfoDto
+import top.nb6.scheduler.xxl.biz.model.types.*
 import top.nb6.scheduler.xxl.http.XxlAdminSiteProperties
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
