@@ -1,13 +1,5 @@
 package top.nb6.scheduler.xxl.biz
 
-import top.nb6.scheduler.xxl.biz.ReactiveJobGroupBiz
-import top.nb6.scheduler.xxl.biz.ReactiveJobInfoBiz
-import top.nb6.scheduler.xxl.biz.exceptions.ApiInvokeException
-import top.nb6.scheduler.xxl.biz.model.JobGroupDto
-import top.nb6.scheduler.xxl.biz.model.JobGroupListDto
-import top.nb6.scheduler.xxl.biz.model.JobInfoDto
-import top.nb6.scheduler.xxl.biz.model.JobInfoListDto
-import top.nb6.scheduler.xxl.biz.model.types.FlagConstants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
@@ -21,6 +13,12 @@ import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.util.retry.Retry
+import top.nb6.scheduler.xxl.biz.exceptions.ApiInvokeException
+import top.nb6.scheduler.xxl.biz.model.JobGroupDto
+import top.nb6.scheduler.xxl.biz.model.JobGroupListDto
+import top.nb6.scheduler.xxl.biz.model.JobInfoDto
+import top.nb6.scheduler.xxl.biz.model.JobInfoListDto
+import top.nb6.scheduler.xxl.biz.model.types.FlagConstants
 import top.nb6.scheduler.xxl.http.*
 import top.nb6.scheduler.xxl.utils.FormUtils
 import java.net.URLEncoder
@@ -244,7 +242,7 @@ class ReactiveJobGroupBizImpl(config: XxlAdminSiteProperties) : ReactiveJobGroup
     }
 
     override fun update(
-        id: Int,
+        id: Long,
         appName: String?,
         title: String?,
         registerType: Int?,
@@ -268,7 +266,7 @@ class ReactiveJobGroupBizImpl(config: XxlAdminSiteProperties) : ReactiveJobGroup
 
     private fun internalCreate(
         uri: String,
-        id: Int,
+        id: Long,
         appName: String?,
         title: String?,
         registerType: Int?,
@@ -302,7 +300,7 @@ class ReactiveJobGroupBizImpl(config: XxlAdminSiteProperties) : ReactiveJobGroup
 
 class ReactiveJobInfoClientImpl(config: XxlAdminSiteProperties) : ReactiveJobInfoBiz, AbstractAdminBizClient(config) {
     override fun query(
-        jobGroupId: Int,
+        jobGroupId: Long,
         triggerStatus: Int,
         jobDesc: String?,
         execHandler: String?,
@@ -327,7 +325,7 @@ class ReactiveJobInfoClientImpl(config: XxlAdminSiteProperties) : ReactiveJobInf
         )
     }
 
-    private fun getJobInfoById(jobGroupId: Int, jobId: Int): Mono<JobInfoDto> {
+    private fun getJobInfoById(jobGroupId: Long, jobId: Long): Mono<JobInfoDto> {
         return query(jobGroupId, FlagConstants.JOB_QRY_TRIGGER_STATUS_ALL, null, null, null, null, null)
             .mapNotNull {
                 it.data.firstOrNull { dto -> dto.id == jobId }
@@ -354,7 +352,7 @@ class ReactiveJobInfoClientImpl(config: XxlAdminSiteProperties) : ReactiveJobInf
             if (!it.ok()) {
                 error(ApiInvokeException("Failed to create schedule"))
             }
-            getJobInfoById(dto?.jobGroup ?: 0, ((it.content ?: "0") as String).toInt())
+            getJobInfoById(dto?.jobGroup ?: 0, ((it.content ?: "0") as String).toLong())
         }
     }
 
@@ -384,19 +382,19 @@ class ReactiveJobInfoClientImpl(config: XxlAdminSiteProperties) : ReactiveJobInf
         }
     }
 
-    override fun remove(id: Int?): Mono<Boolean> {
-        return internalActionJob(id ?: 0, ClientConstants.URI_JOB_INFO_REMOVE)
+    override fun remove(id: Long?): Mono<Boolean> {
+        return internalActionJob(id ?: 0L, ClientConstants.URI_JOB_INFO_REMOVE)
     }
 
-    override fun startJob(id: Int?): Mono<Boolean> {
-        return internalActionJob(id ?: 0, ClientConstants.URI_JOB_SCHEDULE_START)
+    override fun startJob(id: Long?): Mono<Boolean> {
+        return internalActionJob(id ?: 0L, ClientConstants.URI_JOB_SCHEDULE_START)
     }
 
-    override fun stopJob(id: Int?): Mono<Boolean> {
-        return internalActionJob(id ?: 0, ClientConstants.URI_JOB_SCHEDULE_STOP)
+    override fun stopJob(id: Long?): Mono<Boolean> {
+        return internalActionJob(id ?: 0L, ClientConstants.URI_JOB_SCHEDULE_STOP)
     }
 
-    private fun internalActionJob(jobId: Int, uri: String): Mono<Boolean> {
+    private fun internalActionJob(jobId: Long, uri: String): Mono<Boolean> {
         val formContent = BodyInserters.fromFormData("id", "$jobId")
         return request(
             uri,

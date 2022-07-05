@@ -68,7 +68,7 @@ internal class ReactiveJobGroupBizImplTest {
 
     @Test
     fun testCreateAndUpdate() {
-        var jobGroupId = 0
+        var jobGroupId = 0L
         jobGroupBiz
             .create(oldAppName, oldAppName, registerType = 0, addressList = "")
             .`as`(StepVerifier::create)
@@ -89,7 +89,7 @@ internal class ReactiveJobGroupBizImplTest {
 
     @Test
     fun testDelete() {
-        var jobGroupId = 0
+        var jobGroupId = 0L
         val appName = deleteAppName
         jobGroupBiz
             .create(appName, appName, registerType = 0, addressList = "")

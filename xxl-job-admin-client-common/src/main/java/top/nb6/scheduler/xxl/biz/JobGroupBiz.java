@@ -23,7 +23,7 @@ public interface JobGroupBiz {
     JobGroupDto create(String appName, String title, Integer registerType, String addressList)
         throws LoginFailedException, ApiInvokeException;
 
-    JobGroupDto update(int id, String appName, String title, Integer registerType,
+    JobGroupDto update(long id, String appName, String title, Integer registerType,
                        String addressList) throws LoginFailedException, ApiInvokeException;
 
     JobGroupListDto delete(Long id) throws LoginFailedException, ApiInvokeException;

@@ -1,13 +1,8 @@
 package top.nb6.scheduler.xxl.biz
 
-import top.nb6.scheduler.xxl.biz.model.JobInfoDto
 import org.junit.jupiter.api.*
-import top.nb6.scheduler.xxl.biz.model.types.EnumExecutorBlockStrategy
-import top.nb6.scheduler.xxl.biz.model.types.EnumExecutorRoutingStrategy
-import top.nb6.scheduler.xxl.biz.model.types.EnumGlueType
-import top.nb6.scheduler.xxl.biz.model.types.EnumMissingFireStrategy
-import top.nb6.scheduler.xxl.biz.model.types.EnumScheduleType
-import top.nb6.scheduler.xxl.biz.model.types.FlagConstants
+import top.nb6.scheduler.xxl.biz.model.JobInfoDto
+import top.nb6.scheduler.xxl.biz.model.types.*
 import top.nb6.scheduler.xxl.http.XxlAdminHttpClient
 import top.nb6.scheduler.xxl.http.XxlAdminSiteProperties
 
@@ -26,7 +21,7 @@ internal class JobInfoBizImplTest {
         const val oldJobDescription = "oldJobDesc"
         const val newJobDescription = "newJobDesc"
         const val jobHandlerName = "testJobHandler"
-        var groupId = 0
+        var groupId = 0L
     }
 
     @BeforeAll
@@ -155,7 +150,7 @@ internal class JobInfoBizImplTest {
         Assertions.assertTrue(removeResult)
     }
 
-    private fun checkJobStatus(jobId: Int, expectedStatus: Int) {
+    private fun checkJobStatus(jobId: Long, expectedStatus: Int) {
         val list = jobInfoBiz.query(
             groupId, FlagConstants.JOB_QRY_TRIGGER_STATUS_ALL, null,
             null, null, null, null

@@ -23,7 +23,7 @@ public interface ReactiveJobGroupBiz {
     Mono<JobGroupDto> create(String appName, String title, Integer registerType,
                              String addressList);
 
-    Mono<JobGroupDto> update(int id, String appName, String title, Integer registerType,
+    Mono<JobGroupDto> update(long id, String appName, String title, Integer registerType,
                              String addressList);
 
     Mono<JobGroupListDto> delete(Long id);

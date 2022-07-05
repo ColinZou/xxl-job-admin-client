@@ -3,18 +3,18 @@ package top.nb6.scheduler.xxl.biz.model;
 import java.util.Date;
 
 public class JobGroupDto {
-    private int id;
+    private long id;
     private String appname;
     private String title;
     private int addressType;        // 执行器地址类型：0=自动注册、1=手动录入
     private String addressList;     // 执行器地址列表，多地址逗号分隔(手动录入)
     private Date updateTime;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,7 +61,7 @@ public class JobGroupDto {
     public JobGroupDto() {
     }
 
-    public JobGroupDto(int id, String appname, String title, int addressType,
+    public JobGroupDto(long id, String appname, String title, int addressType,
                        String addressList, Date updateTime) {
         this.id = id;
         this.appname = appname;

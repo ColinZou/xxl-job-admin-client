@@ -23,7 +23,7 @@ internal class ReactiveJobInfoClientImplTest {
         const val oldJobDescription = "oldJobDesc"
         const val newJobDescription = "newJobDesc"
         const val jobHandlerName = "testJobHandler"
-        var groupId = 0
+        var groupId = 0L
     }
 
     @BeforeAll
@@ -184,7 +184,7 @@ internal class ReactiveJobInfoClientImplTest {
         }
     }
 
-    private fun testJobStatusChange(method: (Int) -> Mono<Boolean>, jobId: Int, targetTriggerStatus: Int) {
+    private fun testJobStatusChange(method: (Long) -> Mono<Boolean>, jobId: Long, targetTriggerStatus: Int) {
         method.invoke(jobId).filter {
             it
         }.flatMap {
@@ -196,7 +196,7 @@ internal class ReactiveJobInfoClientImplTest {
             .verifyComplete()
     }
 
-    private fun getJobStatus(jobId: Int): Mono<Int> {
+    private fun getJobStatus(jobId: Long): Mono<Int> {
         return jobInfoBiz.query(
             groupId, FlagConstants.JOB_QRY_TRIGGER_STATUS_ALL,
             null, null, null, null, null

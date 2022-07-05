@@ -1,14 +1,14 @@
 package top.nb6.scheduler.xxl.biz
 
 import com.google.gson.Gson
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import top.nb6.scheduler.xxl.biz.exceptions.ApiInvokeException
 import top.nb6.scheduler.xxl.biz.model.JobGroupDto
 import top.nb6.scheduler.xxl.biz.model.JobGroupListDto
 import top.nb6.scheduler.xxl.biz.model.JobInfoDto
 import top.nb6.scheduler.xxl.biz.model.JobInfoListDto
 import top.nb6.scheduler.xxl.biz.model.types.FlagConstants
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import top.nb6.scheduler.xxl.http.ClientConstants
 import top.nb6.scheduler.xxl.http.Constants
 import top.nb6.scheduler.xxl.http.JobInfoCreationResponse
@@ -67,7 +67,7 @@ class JobGroupBizImpl(private val client: XxlAdminHttpClient) :
     }
 
     override fun update(
-        id: Int,
+        id: Long,
         appName: String?,
         title: String?,
         registerType: Int?,
@@ -96,7 +96,7 @@ class JobGroupBizImpl(private val client: XxlAdminHttpClient) :
         }
         validateJsonResponse(client, response.body())
         val currentList = query(null, null, null, null)
-        val existed = currentList.data.firstOrNull { it.id == id?.toInt() }
+        val existed = currentList.data.firstOrNull { it.id == id }
         if (Objects.nonNull(existed)) {
             throw ApiInvokeException("Job group id=$id was not removed")
         }
@@ -105,7 +105,7 @@ class JobGroupBizImpl(private val client: XxlAdminHttpClient) :
 
     private fun internalCreateOrUpdate(
         uri: String,
-        id: Int,
+        id: Long,
         appName: String?,
         title: String?,
         registerType: Int?,
@@ -148,7 +148,7 @@ class JobInfoBizImpl(private val client: XxlAdminHttpClient) : JobInfoBiz {
     }
 
     override fun query(
-        jobGroupId: Int,
+        jobGroupId: Long,
         triggerStatus: Int,
         jobDesc: String?,
         execHandler: String?,
@@ -180,7 +180,7 @@ class JobInfoBizImpl(private val client: XxlAdminHttpClient) : JobInfoBiz {
         return Gson().fromJson(response.body(), JobInfoListDto::class.java)
     }
 
-    private fun retrieveJobInfoById(jobGroupId: Int, jobId: Int): JobInfoDto {
+    private fun retrieveJobInfoById(jobGroupId: Long, jobId: Long): JobInfoDto {
         val jobList = query(
             jobGroupId,
             FlagConstants.JOB_QRY_TRIGGER_STATUS_ALL,
@@ -219,7 +219,7 @@ class JobInfoBizImpl(private val client: XxlAdminHttpClient) : JobInfoBiz {
         }
         validateJsonResponse(client, response.body())
         val data = Gson().fromJson(response.body(), JobInfoCreationResponse::class.java)
-        val jobInfoId = data.content?.toInt() ?: 0
+        val jobInfoId = data.content?.toLong() ?: 0L
         if (jobInfoId <= 0) {
             throw ApiInvokeException("Failed to create schedule")
         }
@@ -246,19 +246,19 @@ class JobInfoBizImpl(private val client: XxlAdminHttpClient) : JobInfoBiz {
         return retrieveJobInfoById(dto?.jobGroup ?: 0, dto?.id ?: 0)
     }
 
-    override fun remove(id: Int?): Boolean {
+    override fun remove(id: Long?): Boolean {
         return internalJobAction(id, ClientConstants.URI_JOB_INFO_REMOVE)
     }
 
-    override fun startJob(id: Int?): Boolean {
+    override fun startJob(id: Long?): Boolean {
         return internalJobAction(id, ClientConstants.URI_JOB_SCHEDULE_START)
     }
 
-    override fun stopJob(id: Int?): Boolean {
+    override fun stopJob(id: Long?): Boolean {
         return internalJobAction(id, ClientConstants.URI_JOB_SCHEDULE_STOP)
     }
 
-    private fun internalJobAction(id: Int?, uri: String): Boolean {
+    private fun internalJobAction(id: Long?, uri: String): Boolean {
         val formBody = FormUtils.build(mapOf("id" to id.toString()))
         val response = client.request(
             uri,

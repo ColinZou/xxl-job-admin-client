@@ -20,7 +20,7 @@ public interface JobInfoBiz {
      * @throws LoginFailedException
      * @throws ApiInvokeException
      */
-    JobInfoListDto query(int jobGroupId, int triggerStatus, String jobDesc,
+    JobInfoListDto query(long jobGroupId, int triggerStatus, String jobDesc,
                          String execHandler, String author, Integer offset, Integer count)
         throws LoginFailedException, ApiInvokeException;
 
@@ -36,9 +36,9 @@ public interface JobInfoBiz {
 
     JobInfoDto update(JobInfoDto dto) throws LoginFailedException, ApiInvokeException;
 
-    boolean remove(Integer id) throws LoginFailedException, ApiInvokeException;
+    boolean remove(Long id) throws LoginFailedException, ApiInvokeException;
 
-    boolean startJob(Integer id) throws LoginFailedException, ApiInvokeException;
+    boolean startJob(Long id) throws LoginFailedException, ApiInvokeException;
 
-    boolean stopJob(Integer id) throws LoginFailedException, ApiInvokeException;
+    boolean stopJob(Long id) throws LoginFailedException, ApiInvokeException;
 }

@@ -9,9 +9,9 @@ import top.nb6.scheduler.xxl.biz.model.types.EnumScheduleType;
 import java.util.Date;
 
 public class JobInfoDto {
-    private int id;                // 主键ID
+    private long id;                // 主键ID
 
-    private int jobGroup;        // 执行器主键ID
+    private long jobGroup;        // 执行器主键ID
     private String jobDesc;
 
     private Date addTime;
@@ -42,19 +42,19 @@ public class JobInfoDto {
     private long triggerLastTime;    // 上次调度时间
     private long triggerNextTime;    // 下次调度时间
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getJobGroup() {
+    public long getJobGroup() {
         return jobGroup;
     }
 
-    public void setJobGroup(int jobGroup) {
+    public void setJobGroup(long jobGroup) {
         this.jobGroup = jobGroup;
     }
 
@@ -235,7 +235,7 @@ public class JobInfoDto {
         this.triggerNextTime = triggerNextTime;
     }
 
-    public JobInfoDto(int id, int jobGroup, String jobDesc, Date addTime, Date updateTime,
+    public JobInfoDto(long id, long jobGroup, String jobDesc, Date addTime, Date updateTime,
                       String author, String alarmEmail,
                       EnumScheduleType scheduleType, String scheduleConf,
                       EnumMissingFireStrategy misfireStrategy,
