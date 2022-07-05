@@ -135,7 +135,9 @@ abstract class AbstractAdminBizClient(private val config: XxlAdminSiteProperties
                             Mono.just(CommonAdminApiResponse(500, "Not logged in because $error"))
                         }
                         locker.lock(Duration.ofSeconds(5), response.map { data ->
-                            data.code == Constants.STATUS_CODE_OK
+                            val ok = data.code == Constants.STATUS_CODE_OK
+                            log.info("Login ok ? $ok")
+                            ok
                         })
                     }
                 }
