@@ -26,4 +26,4 @@ hs_err_pid*
 **/target
 **/*.iml
 ts-pom.xml
-
+ts-build.sh
