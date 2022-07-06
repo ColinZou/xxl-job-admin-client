@@ -9,10 +9,7 @@ import top.nb6.scheduler.xxl.biz.model.JobGroupListDto
 import top.nb6.scheduler.xxl.biz.model.JobInfoDto
 import top.nb6.scheduler.xxl.biz.model.JobInfoListDto
 import top.nb6.scheduler.xxl.biz.model.types.FlagConstants
-import top.nb6.scheduler.xxl.http.ClientConstants
-import top.nb6.scheduler.xxl.http.Constants
-import top.nb6.scheduler.xxl.http.JobInfoCreationResponse
-import top.nb6.scheduler.xxl.http.XxlAdminHttpClient
+import top.nb6.scheduler.xxl.http.*
 import top.nb6.scheduler.xxl.utils.FormUtils
 import java.net.URLEncoder
 import java.net.http.HttpRequest
@@ -252,6 +249,29 @@ class JobInfoBizImpl(private val client: XxlAdminHttpClient) : JobInfoBiz {
 
     override fun startJob(id: Long?): Boolean {
         return internalJobAction(id, ClientConstants.URI_JOB_SCHEDULE_START)
+    }
+
+    override fun triggerOnce(id: Long?, params: String?): Boolean {
+        val formData = FormUtils.build(
+            mapOf(
+                "id" to (id ?: 0).toString(),
+                "executorParam" to (params ?: ""),
+                "addressList" to ""
+            )
+        )
+        if (log.isDebugEnabled) {
+            log.debug("Trying to trigger a job with form $formData")
+        }
+        val response = client.request(
+            ClientConstants.URI_JOB_TRIGGER,
+            HttpResponse.BodyHandlers.ofString(ClientConstants.utf8),
+            HttpRequest.BodyPublishers.ofString(formData),
+            "POST",
+            contentType = Constants.CONTENT_TYPE_URL_FORM_ENCODED
+        )
+        validateJsonResponse(client, response.body())
+        val jsonResponse = Gson().fromJson(response.body(), CommonAdminApiResponse::class.java)
+        return jsonResponse.ok()
     }
 
     override fun stopJob(id: Long?): Boolean {

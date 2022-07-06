@@ -41,4 +41,6 @@ public interface JobInfoBiz {
     boolean startJob(Long id) throws LoginFailedException, ApiInvokeException;
 
     boolean stopJob(Long id) throws LoginFailedException, ApiInvokeException;
+
+    boolean triggerOnce(Long id, String params) throws LoginFailedException, ApiInvokeException;
 }

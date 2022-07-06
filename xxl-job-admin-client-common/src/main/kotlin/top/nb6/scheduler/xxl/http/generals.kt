@@ -38,6 +38,7 @@ class ClientConstants {
         const val URI_JOB_INFO_REMOVE = "/jobinfo/remove"
         const val URI_JOB_SCHEDULE_START = "/jobinfo/start"
         const val URI_JOB_SCHEDULE_STOP = "/jobinfo/stop"
+        const val URI_JOB_TRIGGER = "/jobinfo/trigger"
         val utf8: Charset = StandardCharsets.UTF_8
     }
 }

@@ -1,10 +1,10 @@
 package top.nb6.scheduler.xxl.biz;
 
+import reactor.core.publisher.Mono;
 import top.nb6.scheduler.xxl.biz.exceptions.ApiInvokeException;
 import top.nb6.scheduler.xxl.biz.exceptions.LoginFailedException;
 import top.nb6.scheduler.xxl.biz.model.JobInfoDto;
 import top.nb6.scheduler.xxl.biz.model.JobInfoListDto;
-import reactor.core.publisher.Mono;
 
 public interface ReactiveJobInfoBiz {
     /**
@@ -41,4 +41,6 @@ public interface ReactiveJobInfoBiz {
     Mono<Boolean> startJob(Long id);
 
     Mono<Boolean> stopJob(Long id);
+
+    Mono<Boolean> triggerOnce(Long id, String params);
 }

@@ -139,6 +139,10 @@ internal class JobInfoBizImplTest {
         val result = jobInfoBiz.create(dto)
         Assertions.assertNotNull(result)
         Assertions.assertNotNull(result.id)
+
+        val triggerResult = jobInfoBiz.triggerOnce(result.id, "")
+        Assertions.assertTrue(triggerResult)
+
         val startResult = jobInfoBiz.startJob(result.id)
         Assertions.assertTrue(startResult)
         checkJobStatus(result.id, FlagConstants.JOB_QRY_TRIGGER_STATUS_RUNNING)

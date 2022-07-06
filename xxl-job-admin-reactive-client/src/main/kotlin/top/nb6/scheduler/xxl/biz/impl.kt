@@ -396,6 +396,29 @@ class ReactiveJobInfoClientImpl(config: XxlAdminSiteProperties) : ReactiveJobInf
         return internalActionJob(id ?: 0L, ClientConstants.URI_JOB_SCHEDULE_STOP)
     }
 
+    override fun triggerOnce(id: Long?, params: String?): Mono<Boolean> {
+        val formDataItems = listOf(
+            "id" to (id ?: 0).toString(),
+            "executorParam" to (params ?: ""),
+            "addressList" to ""
+        ).map { Pair(it.first, listOf(it.second)) }.toTypedArray()
+        val formData = BodyInserters.fromFormData(
+            LinkedMultiValueMap(mutableMapOf(*formDataItems))
+        )
+        return request(
+            ClientConstants.URI_JOB_TRIGGER,
+            formData,
+            GeneralApiResponse::class.java,
+            "POST",
+            contentType = Constants.CONTENT_TYPE_URL_FORM_ENCODED
+        ).map {
+            if (!it.ok()) {
+                error(ApiInvokeException("Failed to create schedule"))
+            }
+            it.ok()
+        }
+    }
+
     private fun internalActionJob(jobId: Long, uri: String): Mono<Boolean> {
         val formContent = BodyInserters.fromFormData("id", "$jobId")
         return request(

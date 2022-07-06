@@ -179,6 +179,11 @@ internal class ReactiveJobInfoClientImplTest {
             .verifyComplete()
         Assertions.assertNotNull(createResult)
         createResult?.let { result ->
+            jobInfoBiz.triggerOnce(result.id, "")
+                .`as`(StepVerifier::create)
+                .assertNext {
+                    Assertions.assertTrue(it)
+                }.verifyComplete()
             testJobStatusChange(jobInfoBiz::startJob, result.id, FlagConstants.JOB_QRY_TRIGGER_STATUS_RUNNING)
             testJobStatusChange(jobInfoBiz::stopJob, result.id, FlagConstants.JOB_QRY_TRIGGER_STATUS_STOPPED)
         }
