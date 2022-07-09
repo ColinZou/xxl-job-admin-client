@@ -1,10 +1,10 @@
 package top.nb6.scheduler.xxl.http
 
 import com.google.gson.Gson
-import top.nb6.scheduler.xxl.biz.exceptions.ApiInvokeException
-import top.nb6.scheduler.xxl.biz.exceptions.LoginFailedException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import top.nb6.scheduler.xxl.biz.exceptions.ApiInvokeException
+import top.nb6.scheduler.xxl.biz.exceptions.LoginFailedException
 import top.nb6.scheduler.xxl.utils.UrlUtils
 import java.net.CookieManager
 import java.net.CookiePolicy
@@ -13,13 +13,15 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.time.Duration
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantLock
 
-class XxlAdminHttpClient(private val adminSiteProperties: XxlAdminSiteProperties) {
+open class XxlAdminHttpClient(private val adminSiteProperties: XxlAdminSiteProperties) {
     private val httpClient: HttpClient
 
     companion object {
         private val LOGIN_LOCK = ReentrantLock(false)
+        private val LOGIN_STATUS = AtomicBoolean(false)
         private val log: Logger = LoggerFactory.getLogger(XxlAdminHttpClient::class.java)
     }
 
@@ -56,7 +58,7 @@ class XxlAdminHttpClient(private val adminSiteProperties: XxlAdminSiteProperties
     }
 
     @Throws(LoginFailedException::class)
-    fun doLogin(): Boolean {
+    protected fun doLogin(): Boolean {
         val loginName = adminSiteProperties.loginName
         val loginPassword = adminSiteProperties.loginPassword
         if (loginName.isEmpty() || loginPassword.isEmpty()) {
@@ -64,6 +66,9 @@ class XxlAdminHttpClient(private val adminSiteProperties: XxlAdminSiteProperties
         }
         LOGIN_LOCK.lock()
         try {
+            if (LOGIN_STATUS.get()) {
+                return true
+            }
             val loginUri = Constants.URI_LOGIN_HANDLER
             val response = request(
                 loginUri, HttpResponse.BodyHandlers.ofString(Constants.UTF_8),
@@ -91,7 +96,10 @@ class XxlAdminHttpClient(private val adminSiteProperties: XxlAdminSiteProperties
             val code = if (data.containsKey(codeKey)) {
                 (data[codeKey] as Double).toLong()
             } else 0L
-            return code == Constants.STATUS_CODE_OK
+            val loginOk = code == Constants.STATUS_CODE_OK
+            val updateLoginStatusOk = LOGIN_STATUS.compareAndSet(false, true)
+            log.info("Update login status ok: {}", updateLoginStatusOk)
+            return loginOk
         } finally {
             LOGIN_LOCK.unlock()
         }
@@ -133,6 +141,9 @@ class XxlAdminHttpClient(private val adminSiteProperties: XxlAdminSiteProperties
         val request = requestBuilder.build()
         val response = httpClient.send(request, responseBodyHandler)
         return if (autoLogin && needLogin(response)) {
+            if (LOGIN_STATUS.get()) {
+                LOGIN_STATUS.compareAndSet(true, false)
+            }
             if (doLogin()) {
                 return requestInternal(
                     uri,

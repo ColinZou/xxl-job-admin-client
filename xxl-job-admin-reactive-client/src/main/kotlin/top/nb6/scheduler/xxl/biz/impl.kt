@@ -198,7 +198,7 @@ abstract class AbstractAdminBizClient(private val config: XxlAdminSiteProperties
             })
             .bodyToMono(responseBodyType)
             .onErrorResume { error ->
-                log.warn("Not logged in", error)
+                log.warn("Not logged in: {}", error.message)
                 if (autoLogin && triedTimes < MAX_RETRIES) {
                     return@onErrorResume doLogin().flatMap { ok ->
                         if (ok) {
