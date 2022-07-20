@@ -60,7 +60,8 @@ class FormUtils {
                 "executorTimeout" to dto.executorTimeout.toString(),
                 "executorFailRetryCount" to dto.executorFailRetryCount.toString(),
                 "glueRemark" to dto.glueRemark,
-                "glueSource" to dto.glueSource
+                "glueSource" to dto.glueSource,
+                "triggerStatus" to dto.triggerStatus.toString()
             )
         }
     }
